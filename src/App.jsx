@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
-// Create colored marker icons for different magnitudes
+// Colored marker generator based on magnitude
 const getColorIcon = (magnitude) => {
     const color =
         magnitude >= 5 ? "red" : magnitude >= 3 ? "orange" : "green";
@@ -19,9 +19,10 @@ export default function App() {
     const [earthquakes, setEarthquakes] = useState([]);
     const [minMagnitude, setMinMagnitude] = useState(0);
 
-    // Fetch data from the USGS API once when the page loads
     useEffect(() => {
-        fetch("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson")
+        fetch(
+            "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson"
+        )
             .then((res) => res.json())
             .then((data) => setEarthquakes(data.features))
             .catch((err) => console.error("Error fetching data:", err));
@@ -29,14 +30,12 @@ export default function App() {
 
     return (
         <div style={{ height: "100vh", width: "100vw" }}>
-            {/* Map container centered roughly at the equator */}
             <MapContainer center={[0, 0]} zoom={2} style={{ height: "100%", width: "100%" }}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; OpenStreetMap contributors"
                 />
 
-                {/* Show markers filtered by minimum magnitude */}
                 {earthquakes
                     .filter((eq) => eq.properties.mag >= minMagnitude)
                     .map((eq) => {
@@ -58,16 +57,18 @@ export default function App() {
                     })}
             </MapContainer>
 
-            {/* Magnitude filter */}
-            <div style={{
-                position: "absolute",
-                top: 10,
-                left: 10,
-                background: "white",
-                padding: "8px 12px",
-                borderRadius: "8px",
-                boxShadow: "0 0 6px rgba(0,0,0,0.3)"
-            }}>
+            {/* Magnitude Filter */}
+            <div
+                style={{
+                    position: "absolute",
+                    top: 10,
+                    left: 10,
+                    background: "white",
+                    padding: "8px 12px",
+                    borderRadius: "8px",
+                    boxShadow: "0 0 6px rgba(0,0,0,0.3)",
+                }}
+            >
                 <label>
                     Min Magnitude: {minMagnitude}
                     <input
@@ -82,15 +83,17 @@ export default function App() {
             </div>
 
             {/* Legend */}
-            <div style={{
-                position: "absolute",
-                bottom: 10,
-                left: 10,
-                background: "white",
-                padding: "8px 12px",
-                borderRadius: "8px",
-                boxShadow: "0 0 6px rgba(0,0,0,0.3)"
-            }}>
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: 10,
+                    left: 10,
+                    background: "white",
+                    padding: "8px 12px",
+                    borderRadius: "8px",
+                    boxShadow: "0 0 6px rgba(0,0,0,0.3)",
+                }}
+            >
                 <strong>Legend</strong>
                 <div><span style={{ color: "green" }}>●</span> Magnitude &lt; 3</div>
                 <div><span style={{ color: "orange" }}>●</span> 3 ≤ Magnitude &lt; 5</div>
